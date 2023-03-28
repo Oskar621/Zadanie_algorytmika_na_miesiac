@@ -30,10 +30,13 @@ class MainActivity : AppCompatActivity() {
             if(iloscZnakow.text.toString() == "" || wzorzec.text.toString() == "")
                 return@setOnClickListener
             val tekst = wylosujTekst(iloscZnakow?.text.toString().toInt())
-            Toast.makeText(applicationContext, tekst, Toast.LENGTH_LONG).show()
 
         }
     }
+
+
+
+    //Losowanie tekstu o podanej dlugosci znakow
     fun wylosujTekst(ilosc: Int): String{
         val charPool : List<Char> = ('a'..'z') + ('A'..'Z') + ('0' .. '9')// lista znaków, z których będzie losowany ciąg
         return (1..ilosc)
