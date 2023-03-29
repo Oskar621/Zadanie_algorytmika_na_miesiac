@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlin.random.Random
+import kotlin.system.measureTimeMillis
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -14,8 +14,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         //Ilosc znakow i wzorzec
-        val iloscZnakow = findViewById<EditText>(R.id.IloscZnakow)
-        val wzorzec = findViewById<EditText>(R.id.PodajWzorzec)
+        val iloscZnakow = findViewById<EditText>(R.id.IloscZnakow).text
+        val wzorzec = findViewById<EditText>(R.id.PodajWzorzec).text
 
         //Sprawdz
         val Sprawdz = findViewById<Button>(R.id.Sprawdz)
@@ -27,13 +27,36 @@ class MainActivity : AppCompatActivity() {
         val RkCzas = findViewById<TextView>(R.id.RkCzas)
 
         Sprawdz.setOnClickListener {
-            if(iloscZnakow.text.toString() == "" || wzorzec.text.toString() == "")
+            if(iloscZnakow.toString() == "" || wzorzec.toString() == "")
                 return@setOnClickListener
-            val tekst = wylosujTekst(iloscZnakow?.text.toString().toInt())
+            val tekst = wylosujTekst(iloscZnakow.toString().toInt())
+
+            var czas = measureTimeMillis {
+                bruteForce(tekst.toString(),wzorzec.toString())
+            }
+            BruteCzas.text = String.format("%s ms",czas)
 
         }
     }
 
+    //algorytm brute force
+    fun bruteForce(tekst: String, wzorzec: String){
+        val pozycje = mutableListOf<Int>()
+        val n = tekst.length
+        val m = wzorzec.length
+        // Przeszukanie tekstu w poszukiwaniu wzorca
+        for (i in 0..n-m) {
+            var j = 0
+            // Porównywanie kolejnych znaków tekstu i wzorca
+            while (j < m && tekst[i+j] == wzorzec[j]) {
+                j++
+            }
+            // Jeśli udało się dopasować cały wzorzec, dodajemy pozycję do listy
+            if (j == m) {
+                pozycje.add(i)
+            }
+        }
+    }
 
 
     //Losowanie tekstu o podanej dlugosci znakow
