@@ -5,6 +5,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import kotlin.math.pow
 import kotlin.random.Random
 import kotlin.system.measureTimeMillis
 
@@ -37,16 +38,22 @@ class MainActivity : AppCompatActivity() {
                 bruteForce(tekst,wzorzec.toString())
             }
 
-            BruteCzas.text = String.format("%s ms",czas)
+            BruteCzas.text = String.format("%s ms", czas)
             czas = measureTimeMillis {
                 KMP(tekst,wzorzec.toString())
             }
-            KMPCzas.text = String.format("%s ms",czas)
+            KMPCzas.text = String.format("%s ms", czas)
 
             czas = measureTimeMillis {
                 bm(tekst,wzorzec.toString())
             }
-            BmCzas.text = String.format("%s ms",czas)
+            BmCzas.text = String.format("%s ms", czas)
+
+            czas = measureTimeMillis {
+                RK(tekst, wzorzec.toString())
+            }
+            RkCzas.text = String.format("%s ms", czas)
+
         }
     }
 
@@ -140,6 +147,31 @@ class MainActivity : AppCompatActivity() {
             i += maxOf(skip[tekst[i].toInt()], m - j)
         }
         return 0
+    }
+    //algorytm R-K
+    fun RK(tekst: String, wzorzec: String) {
+        val prime = 101 // wybieramy liczbę pierwszą jako podstawę
+        val m = wzorzec.length
+        val n = tekst.length
+        val results = mutableListOf<Int>()
+        val pHash = wzorzec.hashCode() // obliczamy hasz wzorca
+
+        var tHash = tekst.substring(0, m).hashCode() // obliczamy hasz początkowego fragmentu tekstu
+        if (tHash == pHash && tekst.substring(0, m) == wzorzec) {
+            results.add(0)
+        }
+
+        val power = prime.toDouble().pow(m - 1).toInt() // obliczamy wartość prime^(m-1)
+
+        for (i in 1..n - m) {
+            // obliczamy hasz kolejnego fragmentu tekstu na podstawie poprzedniego
+            tHash = prime * (tHash - tekst[i - 1].hashCode() * power) + tekst[i + m - 1].hashCode()
+
+            // jeśli hasze się zgadzają, to porównujemy dokładnie wzorzec z tekstem
+            if (tHash == pHash && tekst.substring(i, i + m) == wzorzec) {
+                results.add(i)
+            }
+        }
     }
     //Losowanie tekstu o podanej dlugosci znakow
     fun wylosujTekst(ilosc: Int): String{
