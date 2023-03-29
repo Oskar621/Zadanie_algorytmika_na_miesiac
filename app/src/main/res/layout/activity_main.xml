@@ -9,15 +9,15 @@
 
     <TextView
         android:id="@+id/BruteForceCzas"
-        android:layout_width="212dp"
-        android:layout_height="44dp"
+        android:layout_width="232dp"
+        android:layout_height="43dp"
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.859"
+        app:layout_constraintHorizontal_bias="0.821"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Wyniki"
-        app:layout_constraintVertical_bias="0.054" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.652" />
 
     <TextView
         android:id="@+id/KMPCzas"
@@ -26,10 +26,10 @@
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.859"
+        app:layout_constraintHorizontal_bias="0.738"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Wyniki"
-        app:layout_constraintVertical_bias="0.307" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.752" />
 
     <TextView
         android:id="@+id/BmCzas"
@@ -38,10 +38,10 @@
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.859"
+        app:layout_constraintHorizontal_bias="0.738"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Wyniki"
-        app:layout_constraintVertical_bias="0.568" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.863" />
 
     <TextView
         android:id="@+id/RkCzas"
@@ -50,22 +50,21 @@
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.859"
+        app:layout_constraintHorizontal_bias="0.738"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Wyniki"
-        app:layout_constraintVertical_bias="0.807" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.992" />
 
     <TextView
         android:id="@+id/PodajWzorzecTXT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
         android:text="Podaj wzorzec"
-        app:layout_constraintBottom_toTopOf="@+id/PodajWzorzec"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/IloscZnakow"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.297" />
 
     <EditText
         android:id="@+id/IloscZnakow"
@@ -74,12 +73,14 @@
         android:layout_marginTop="12dp"
         android:ems="10"
         android:inputType="numberSigned"
+        android:minHeight="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/IleZnakowTXT"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.137"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <TextView
         android:id="@+id/IleZnakowTXT"
@@ -99,12 +100,14 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
+        android:minHeight="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/IloscZnakow"
-        app:layout_constraintVertical_bias="0.152" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.352"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <Button
         android:id="@+id/Sprawdz"
@@ -114,15 +117,15 @@
         android:text="Sprawdź"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/PodajWzorzec"
-        app:layout_constraintVertical_bias="0.007" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.419" />
 
     <TextView
         android:id="@+id/Wyniki"
-        android:layout_width="366dp"
-        android:layout_height="61dp"
+        android:layout_width="413dp"
+        android:layout_height="64dp"
         android:layout_marginTop="14dp"
         android:text="WYNIKI:"
         android:textScaleX="2"
@@ -131,8 +134,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Sprawdz"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.519" />
 
     <TextView
         android:id="@+id/BruteForceTXT"

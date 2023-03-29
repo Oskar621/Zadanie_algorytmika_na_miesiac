@@ -13,20 +13,22 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //Ilosc znakow i wzorzec
-        val iloscZnakow = findViewById<EditText>(R.id.IloscZnakow).text
-        val wzorzec = findViewById<EditText>(R.id.PodajWzorzec).text
-
         //Sprawdz
         val Sprawdz = findViewById<Button>(R.id.Sprawdz)
 
-        //Wyniki
         val BruteCzas = findViewById<TextView>(R.id.BruteForceCzas)
         val KMPCzas = findViewById<TextView>(R.id.KMPCzas)
         val BmCzas = findViewById<TextView>(R.id.BmCzas)
         val RkCzas = findViewById<TextView>(R.id.RkCzas)
 
         Sprawdz.setOnClickListener {
+            //Ilosc znakow i wzorzec
+
+            val iloscZnakow = findViewById<EditText>(R.id.IloscZnakow).text
+            val wzorzec = findViewById<EditText>(R.id.PodajWzorzec).text
+
+
+
             if(iloscZnakow.toString() == "" || wzorzec.toString() == "")
                 return@setOnClickListener
             val tekst = wylosujTekst(iloscZnakow.toString().toInt())
@@ -114,67 +116,31 @@ class MainActivity : AppCompatActivity() {
     }
 
     //algorytm B-M
-    fun bm(wzorzec: String, tekst: String){
-        val pozycje = mutableListOf<Int>()
+    fun bm(tekst: String, wzorzec: String): Int{
         val n = tekst.length
         val m = wzorzec.length
-        // Tworzenie tablicy określającej najdalszy występujący indeks dla każdej litery wzorca
-        val bmBc = buildBMBc(wzorzec)
-        // Tworzenie tablicy określającej przesunięcie dla każdej pozycji sufiksu wzorca
-        val bmGs = buildBMGs(wzorzec)
-        var i = m-1  // indeks wzorca
-        var j = m-1  // indeks tekstu
-        while (j < n) {
-            if (wzorzec[i] == tekst[j]) {
-                // Jeśli udało się dopasować cały wzorzec, dodajemy pozycję do listy `positions`
-                if (i == 0) {
-                    pozycje.add(j)
-                    i = m-1
-                    j += m  // przesuwamy indeks tekstu
-                } else {
-                    i--
-                    j--
+
+        val skip = IntArray(256) { m }
+
+        for (i in 0 until m - 1) {
+            skip[wzorzec[i].toInt()] = m - i - 1
+        }
+
+        var i = m - 1
+
+        while (i < n) {
+            var j = m - 1
+            while (tekst[i] == wzorzec[j]) {
+                if (j == 0) {
+                    return i
                 }
-            } else {
-                val x = bmBc[tekst[j].code]
-                val y = i - bmGs[i]
-                i = maxOf(x, y)
-                j += i - y
-            }
-        }
-    }
-
-
-    fun buildBMBc(wzorzec: String): IntArray {
-        val m = wzorzec.length
-        val bmBc = IntArray(256) { m }
-        for (i in 0 until m-1) {
-            bmBc[wzorzec[i].code] = m - i - 1
-        }
-        return bmBc
-    }
-
-    fun buildBMGs(wzorzec: String): IntArray {
-        val m = wzorzec.length
-        val bmGs = IntArray(m)
-        var i = m-1
-        var j = m
-        bmGs[i] = j
-        while (i > 0) {
-            if (wzorzec[i-1] == wzorzec[j-1]) {
                 i--
                 j--
-                bmGs[i] = j
-            } else if (j == m) {
-                i--
-                j = bmGs[i]
-            } else {
-                j = bmGs[j]
             }
+            i += maxOf(skip[tekst[i].toInt()], m - j)
         }
-        return bmGs
+        return 0
     }
-
     //Losowanie tekstu o podanej dlugosci znakow
     fun wylosujTekst(ilosc: Int): String{
         val charPool : List<Char> = ('a'..'z') + ('A'..'Z') + ('0' .. '9')// lista znaków, z których będzie losowany ciąg
