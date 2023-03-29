@@ -40,6 +40,11 @@ class MainActivity : AppCompatActivity() {
                 KMP(tekst,wzorzec.toString())
             }
             KMPCzas.text = String.format("%s ms",czas)
+
+            czas = measureTimeMillis {
+                bm(tekst,wzorzec.toString())
+            }
+            BmCzas.text = String.format("%s ms",czas)
         }
     }
 
@@ -106,6 +111,68 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return lps
+    }
+
+    //algorytm B-M
+    fun bm(wzorzec: String, tekst: String){
+        val pozycje = mutableListOf<Int>()
+        val n = tekst.length
+        val m = wzorzec.length
+        // Tworzenie tablicy określającej najdalszy występujący indeks dla każdej litery wzorca
+        val bmBc = buildBMBc(wzorzec)
+        // Tworzenie tablicy określającej przesunięcie dla każdej pozycji sufiksu wzorca
+        val bmGs = buildBMGs(wzorzec)
+        var i = m-1  // indeks wzorca
+        var j = m-1  // indeks tekstu
+        while (j < n) {
+            if (wzorzec[i] == tekst[j]) {
+                // Jeśli udało się dopasować cały wzorzec, dodajemy pozycję do listy `positions`
+                if (i == 0) {
+                    pozycje.add(j)
+                    i = m-1
+                    j += m  // przesuwamy indeks tekstu
+                } else {
+                    i--
+                    j--
+                }
+            } else {
+                val x = bmBc[tekst[j].code]
+                val y = i - bmGs[i]
+                i = maxOf(x, y)
+                j += i - y
+            }
+        }
+    }
+
+
+    fun buildBMBc(wzorzec: String): IntArray {
+        val m = wzorzec.length
+        val bmBc = IntArray(256) { m }
+        for (i in 0 until m-1) {
+            bmBc[wzorzec[i].code] = m - i - 1
+        }
+        return bmBc
+    }
+
+    fun buildBMGs(wzorzec: String): IntArray {
+        val m = wzorzec.length
+        val bmGs = IntArray(m)
+        var i = m-1
+        var j = m
+        bmGs[i] = j
+        while (i > 0) {
+            if (wzorzec[i-1] == wzorzec[j-1]) {
+                i--
+                j--
+                bmGs[i] = j
+            } else if (j == m) {
+                i--
+                j = bmGs[i]
+            } else {
+                j = bmGs[j]
+            }
+        }
+        return bmGs
     }
 
     //Losowanie tekstu o podanej dlugosci znakow
