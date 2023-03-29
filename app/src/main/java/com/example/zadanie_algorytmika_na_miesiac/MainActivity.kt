@@ -32,10 +32,14 @@ class MainActivity : AppCompatActivity() {
             val tekst = wylosujTekst(iloscZnakow.toString().toInt())
 
             var czas = measureTimeMillis {
-                bruteForce(tekst.toString(),wzorzec.toString())
+                bruteForce(tekst,wzorzec.toString())
             }
-            BruteCzas.text = String.format("%s ms",czas)
 
+            BruteCzas.text = String.format("%s ms",czas)
+            czas = measureTimeMillis {
+                KMP(tekst,wzorzec.toString())
+            }
+            KMPCzas.text = String.format("%s ms",czas)
         }
     }
 
@@ -58,6 +62,51 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    //algorytm KMP
+    fun KMP(tekst: String, wzorzec: String) {
+        val pozycje = mutableListOf<Int>()
+        val n = tekst.length
+        val m = wzorzec.length
+        // Tworzenie tablicy określającej najdłuższy prefiks-sufiks dla każdego prefiksu wzorca
+        val lps = buildLPS(wzorzec)
+        var i = 0  // indeks wzorca
+        var j = 0  // indeks tekstu
+        while (j < n) {
+            if (wzorzec[i] == tekst[j]) {
+                i++
+                j++
+                if (i == m) {
+                    pozycje.add(j-m)
+                    i = lps[i-1]  // przesuwamy indeks wzorca
+                }
+            } else if (i > 0) {
+                i = lps[i-1]  // przesuwamy indeks wzorca
+            } else {
+                j++  // przesuwamy indeks tekstu
+            }
+        }
+    }
+
+    //tworzenie prefikso-sufiksow
+    fun buildLPS(wzorzec: String): IntArray {
+        val m = wzorzec.length
+        val lps = IntArray(m)
+        var len = 0
+        var i = 1
+        while (i < m) {
+            if (wzorzec[i] == wzorzec[len]) {
+                len++
+                lps[i] = len
+                i++
+            } else if (len > 0) {
+                len = lps[len-1]
+            } else {
+                lps[i] = 0
+                i++
+            }
+        }
+        return lps
+    }
 
     //Losowanie tekstu o podanej dlugosci znakow
     fun wylosujTekst(ilosc: Int): String{
