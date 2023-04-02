@@ -1,58 +1,51 @@
 package com.example.zadanie_algorytmika_na_miesiac
 
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
+
 import androidx.appcompat.app.AppCompatActivity
+import com.example.zadanie_algorytmika_na_miesiac.databinding.ActivityMainBinding
 import kotlin.math.pow
 import kotlin.random.Random
 import kotlin.system.measureTimeMillis
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var binding:  ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         //Sprawdz
-        val Sprawdz = findViewById<Button>(R.id.Sprawdz)
 
-        val BruteCzas = findViewById<TextView>(R.id.BruteForceCzas)
-        val KMPCzas = findViewById<TextView>(R.id.KMPCzas)
-        val BmCzas = findViewById<TextView>(R.id.BmCzas)
-        val RkCzas = findViewById<TextView>(R.id.RkCzas)
+        binding.Sprawdz.setOnClickListener {
 
-        Sprawdz.setOnClickListener {
             //Ilosc znakow i wzorzec
 
-            val iloscZnakow = findViewById<EditText>(R.id.IloscZnakow).text
-            val wzorzec = findViewById<EditText>(R.id.PodajWzorzec).text
-
-
-
-            if(iloscZnakow.toString() == "" || wzorzec.toString() == "")
+            if(binding.PodajWzorzec.text.toString() == "" || binding.IloscZnakow.text.toString() == "")
                 return@setOnClickListener
-            val tekst = wylosujTekst(iloscZnakow.toString().toInt())
+            val tekst = wylosujTekst(binding.IloscZnakow.text.toString().toInt())
 
             var czas = measureTimeMillis {
-                bruteForce(tekst,wzorzec.toString())
+                bruteForce(tekst,binding.PodajWzorzec.text.toString())
             }
-
-            BruteCzas.text = String.format("%s ms", czas)
-            czas = measureTimeMillis {
-                KMP(tekst,wzorzec.toString())
-            }
-            KMPCzas.text = String.format("%s ms", czas)
+            binding.BruteForceCzas.text = String.format("%s ms", czas)
 
             czas = measureTimeMillis {
-                bm(tekst,wzorzec.toString())
+                KMP(tekst,binding.PodajWzorzec.text.toString())
             }
-            BmCzas.text = String.format("%s ms", czas)
+            binding.KMPCzas.text = String.format("%s ms", czas)
 
             czas = measureTimeMillis {
-                RK(tekst, wzorzec.toString())
+                bm(tekst,binding.PodajWzorzec.text.toString())
             }
-            RkCzas.text = String.format("%s ms", czas)
+            binding.BmCzas.text = String.format("%s ms", czas)
+
+            czas = measureTimeMillis {
+                RK(tekst, binding.PodajWzorzec.text.toString())
+            }
+            binding.RkCzas.text = String.format("%s ms", czas)
 
         }
     }
@@ -148,6 +141,7 @@ class MainActivity : AppCompatActivity() {
         }
         return 0
     }
+
     //algorytm R-K
     fun RK(tekst: String, wzorzec: String) {
         val prime = 101 // wybieramy liczbę pierwszą jako podstawę
